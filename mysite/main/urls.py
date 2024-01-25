@@ -16,10 +16,12 @@ Including another URLconf
 """
 
 from django.urls import path
-from . import views 
+from . import views
 
-app_name = "main"
+
+app_name = 'main'  # here for namespacing of urls.
 
 urlpatterns = [
-    path('', views.homepage, name="homepage"),
+  path("", views.homepage, name="homepage"),
+  path("register/", views.register, name="register"),
 ]

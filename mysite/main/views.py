@@ -3,6 +3,10 @@ from django.http import HttpResponse
 from .models import Tutorial
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout, authenticate, login
+from django.contrib import messages
+import logging
+logger = logging.getLogger('django')
+
 
 def homepage(request):
     return render(request = request,
@@ -14,12 +18,14 @@ def register(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
+            messages.success(request, f"New account created: {username}")
             login(request, user)
             return redirect("main:homepage")
 
         else:
             for msg in form.error_messages:
-                print(form.error_messages[msg])
+                logger.info(msg)
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
 
             return render(request = request,
                           template_name = "main/register.html",
